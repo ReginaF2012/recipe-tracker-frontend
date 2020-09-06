@@ -1,3 +1,4 @@
+
 const recipesReducer = (state = [], action) => {
     switch(action.type) {
       case 'FETCHING_RECIPES':
