@@ -3,10 +3,12 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 
+import { logoutUser } from '../actions/usersActions'
+
 class NavigationBar extends Component{
 
     handleLogout = (event) => {
-        
+        this.props.logoutUser()
     }
 
     renderLoginOrLogout = () => {
@@ -56,4 +58,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(NavigationBar)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logoutUser: () => dispatch(logoutUser)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
