@@ -1,6 +1,5 @@
 import React from 'react';
-import './App.css';
-import RecipesContainer from './container/Recipes/RecipesContainer';
+import RecipesContainer from '../container/Recipes/RecipesContainer';
 
 
 function App() {

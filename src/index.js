@@ -1,13 +1,38 @@
-import React from 'react';
-import { render } from 'react-dom';
-import rootReducer from './reducers/rootReducer';
-import Root from './components/root';
-
+ import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
 import { createStore, applyMiddleware, compose } from 'redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+    Link
+  } from "react-router-dom";
 
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+import rootReducer from './reducers/rootReducer';
 
-const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)))
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-render(<Root store={store} />, document.getElementById('root'))
+const store = createStore(
+  rootReducer,
+  composeEnhancer(applyMiddleware(thunk)),
+);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <Router>
+            <Switch>
+                <Route exact path="/">
+                    <Redirect to="/recipes" />
+                </Route>
+                <Route path="/recipes">
+                    < App />
+                </Route>
+            </Switch>
+        </Router>
+    </ Provider>,
+  document.getElementById('root')
+);

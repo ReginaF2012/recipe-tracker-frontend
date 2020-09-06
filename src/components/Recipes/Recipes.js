@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { fetchRecipes } from '../../actions/recipesActions';
 import { connect } from 'react-redux';
 import Recipe from '../Recipes/Recipe';
+import { CardColumns } from 'react-bootstrap';
 
 class Recipes extends Component {
 
@@ -14,19 +15,19 @@ class Recipes extends Component {
 
     componentDidMount(){
         this.props.fetchRecipes()
-        console.log("CDM props log", this.props.recipes)
     }
 
     render(){
         return (
-        <div>{this.makeRecipeCards()}</div>
+            <CardColumns >  
+                {this.makeRecipeCards()}
+            </CardColumns>
 
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    console.log("MSTP log", state)
     return {
         recipes: state.recipes
     }
