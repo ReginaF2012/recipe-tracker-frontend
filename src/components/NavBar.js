@@ -1,8 +1,31 @@
 import React from 'react';
 import { Component } from 'react';
+import { connect } from 'react-redux';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 
-export default class NavigationBar extends Component{
+class NavigationBar extends Component{
+
+    handleLogout = (event) => {
+        
+    }
+
+    renderLoginOrLogout = () => {
+    
+        if(!this.props.user.id){
+            return (
+                <Nav.Link href="/login" >
+                   Login
+                </Nav.Link>
+            )
+        } else {
+            return (
+                <Nav.Link onClick={this.handleLogout} href="/recipes" >
+                  Logout
+                </Nav.Link>
+            )
+        }
+    }
+
      render(){
         return (
         <Navbar bg="light" variant="light">
@@ -11,9 +34,9 @@ export default class NavigationBar extends Component{
                 <Nav.Link href="/recipes" >
                   Recipes
                 </Nav.Link>
-                <Nav.Link href="/login" >
-                   Login
-                </Nav.Link>
+
+                {this.renderLoginOrLogout()}
+
                 <Nav.Link href="#" >
                     
                 </Nav.Link>
@@ -26,3 +49,11 @@ export default class NavigationBar extends Component{
          )
      }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(NavigationBar)

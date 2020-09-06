@@ -16,9 +16,11 @@ class LoginForm extends Component{
         event.preventDefault()
         let user = this.state
         this.props.loginUser(user)
+
         this.setState({username: '', email: '', password: ''})
     }
     render(){
+        if(!this.props.user.id){
         return (
             <Container>
                 <Form onSubmit={this.handleSubmit} id="login-form">
@@ -44,7 +46,9 @@ class LoginForm extends Component{
                     </Button>
                 </Form>
             </Container>
-            )
+            )} else {
+                return ( <>{this.props.history.push('/recipes')}</>)
+            }
     }
 }
 
@@ -54,4 +58,10 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(LoginForm)
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)

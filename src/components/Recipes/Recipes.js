@@ -1,6 +1,5 @@
 import React from 'react';
 import { Component } from 'react';
-import { fetchRecipes } from '../../actions/recipesActions';
 import { connect } from 'react-redux';
 import Recipe from '../Recipes/Recipe';
 import { CardColumns } from 'react-bootstrap';
@@ -11,10 +10,6 @@ class Recipes extends Component {
          return this.props.recipes.map(recipe => {
             return Recipe(recipe)
          })
-    }
-
-    componentDidMount(){
-        this.props.fetchRecipes()
     }
 
     render(){
@@ -34,10 +29,4 @@ const mapStateToProps = (state) => {
 }
 
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-            fetchRecipes: () => dispatch(fetchRecipes())
-        }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Recipes)
+export default connect(mapStateToProps)(Recipes)

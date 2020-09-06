@@ -1,14 +1,51 @@
 import React from 'react';
+import { Component } from 'react';
+import { fetchRecipes } from '../actions/recipesActions';
+import { connect } from 'react-redux';
+import LoginForm from './Users/LoginForm'
 import RecipesContainer from '../container/Recipes/RecipesContainer';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 
 
-function App() {
+class App extends Component{
 
-  return (
-    <div className="App">
-      < RecipesContainer />
-    </div>
-  );
+  componentDidMount(){
+    this.props.fetchRecipes()
+  }
+
+  render(){
+    return (
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/recipes" />
+            </Route>
+
+            <Route exact path="/recipes" render={props => (<RecipesContainer {...props} />)} />
+
+            <Route exact path="/login" render={props => (<LoginForm history={props.history} />)} />
+
+          </Switch>
+        </Router>     
+    )
+  }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+          fetchRecipes: () => dispatch(fetchRecipes())
+      }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    ...state
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
