@@ -1,0 +1,1 @@
+export const ADD_ALERTS = (alerts) => ({type: "ADD_ALERTS", payload: alerts})

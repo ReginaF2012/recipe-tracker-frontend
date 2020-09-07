@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
-import { Form, Button, Container, Alert} from 'react-bootstrap';
+import { Form, Button, Container } from 'react-bootstrap';
 import { loginUser } from '../../actions/usersActions';
 
 class LoginForm extends Component{
@@ -21,15 +21,12 @@ class LoginForm extends Component{
         this.setState({username: '', email: '', password: ''})
     }
 
-    renderAlerts = () => {
-        return !!this.props.user.alerts && <Alert variant="danger">{this.props.user.alerts}</Alert>
-    }
+
     render(){
-        console.log(this.props)
         if(!this.props.user.id){
         return (
             <Container>
-                {this.renderAlerts()}
+                <h1>Login Form</h1>
                 <Form onSubmit={this.handleSubmit} id="login-form">
                     <Form.Group>
 
@@ -75,7 +72,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
+        alerts: state.alerts
     }
 }
 

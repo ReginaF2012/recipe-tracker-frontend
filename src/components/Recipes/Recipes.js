@@ -2,8 +2,9 @@ import React from 'react';
 import { Component } from 'react';
 import Recipe from '../Recipes/Recipe';
 import { CardColumns } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-export default class Recipes extends Component {
+class Recipes extends Component {
 
     makeRecipeCards = () => {
          return this.props.recipes.map(recipe => {
@@ -20,4 +21,10 @@ export default class Recipes extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return { alerts: state.alerts }
+}
+
+export default connect(mapStateToProps)(Recipes)
 

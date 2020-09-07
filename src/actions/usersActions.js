@@ -1,8 +1,8 @@
-
+import { ADD_ALERTS } from './alertsActions';
 const URL = "http://localhost:3001/api/v1/users"
 const LOGIN = (user) => ({type: "LOGIN", payload: user})
 const LOGOUT = {type: "LOGOUT"}
-const INVALID_AUTHENTICATION = (errors) => ({type: "INVALID_AUTHENTICATION", payload: errors})
+
 export const loginUser = (user) => {
     return (dispatch) => {
         fetch(URL+'/login', {
@@ -15,7 +15,7 @@ export const loginUser = (user) => {
         })
         .then(resp => resp.json())
         .then(json => {
-            !!json.errors ? dispatch(INVALID_AUTHENTICATION(json.errors)) : dispatch(LOGIN(json))})
+            !!json.errors ? dispatch(ADD_ALERTS(json.errors)) : dispatch(LOGIN(json))})
     }
 }
 
