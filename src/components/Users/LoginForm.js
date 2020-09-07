@@ -47,7 +47,7 @@ class LoginForm extends Component{
                 </Form>
             </Container>
             )} else {
-                return ( <>{this.props.history.push('/recipes')}</>)
+                return ( <>{this.props.history.push(`/users/${this.props.user.id}/recipes`)}</>)
             }
     }
 }

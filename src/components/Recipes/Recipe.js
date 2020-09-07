@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
 export default function Recipe(props){
-    console.log(props)
        return (
         <Card key={props.id} className="text-center">
             <Card.Img variant="top" alt={`${props.name} image`} src={props.image_url} />

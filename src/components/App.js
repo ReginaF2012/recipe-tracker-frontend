@@ -3,13 +3,14 @@ import { Component } from 'react';
 import { fetchRecipes } from '../actions/recipesActions';
 import { connect } from 'react-redux';
 import LoginForm from './Users/LoginForm'
-import RecipesContainer from '../container/Recipes/RecipesContainer';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect
 } from "react-router-dom";
+import Recipes from './Recipes/Recipes';
+import NavBar from './NavBar';
 
 
 class App extends Component{
@@ -21,14 +22,19 @@ class App extends Component{
   render(){
     return (
         <Router>
+           < NavBar />
           <Switch>
             <Route exact path="/">
               <Redirect to="/recipes" />
             </Route>
 
-            <Route exact path="/recipes" render={props => (<RecipesContainer {...props} />)} />
+            <Route exact path="/recipes" render={props => (<Recipes {...props} recipes={this.props.recipes} />)} />
 
             <Route exact path="/login" render={props => (<LoginForm history={props.history} />)} />
+
+            <Route exact path="/users/:id/recipes" render={props => (<Recipes 
+            recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))}
+            />)}/>
 
           </Switch>
         </Router>     
