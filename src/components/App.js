@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import Recipes from './Recipes/Recipes';
 import NavBar from './NavBar';
+import RecipeForm from './Recipes/RecipeForm';
 
 
 class App extends Component{
@@ -31,6 +32,8 @@ class App extends Component{
             <Route exact path="/recipes" render={props => (<Recipes {...props} recipes={this.props.recipes} />)} />
 
             <Route exact path="/login" render={props => (<LoginForm history={props.history} />)} />
+
+            <Route exact path="/recipes/new" render={props => (<RecipeForm history={props.history}/>)}/>
 
             <Route exact path="/users/:id/recipes" render={props => (<Recipes 
             recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))}

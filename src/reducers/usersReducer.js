@@ -9,6 +9,9 @@ const usersReducer = (state = {}, action) => {
         case "LOGOUT":
             localStorage.removeItem('token')
             return {}
+
+        case "INVALID_AUTHENTICATION":
+            return {alerts: action.payload}
             
         default:
             return state

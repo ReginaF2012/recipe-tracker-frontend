@@ -2,7 +2,6 @@ import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { logoutUser } from '../actions/usersActions'
@@ -36,12 +35,18 @@ class NavigationBar extends Component{
     renderLoggedInLinks = () => {
         if(!!this.props.user.id){
             return (
+                <>
                 <LinkContainer to={`/users/${this.props.user.id}/recipes`}>
                     <Nav.Link  >
                         Your Recipes
                     </Nav.Link>
                 </LinkContainer>
-                
+                <LinkContainer to="/recipes/new">
+                    <Nav.Link>
+                        New Recipe
+                    </Nav.Link>
+                </LinkContainer>
+                </>
             )
         }
     }

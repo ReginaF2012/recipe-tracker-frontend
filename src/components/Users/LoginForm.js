@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container, Alert} from 'react-bootstrap';
 import { loginUser } from '../../actions/usersActions';
 
 class LoginForm extends Component{
@@ -19,10 +19,16 @@ class LoginForm extends Component{
 
         this.setState({username: '', email: '', password: ''})
     }
+
+    renderAlerts = () => {
+        return !!this.props.user.alerts && <Alert variant="danger">{this.props.user.alerts}</Alert>
+    }
     render(){
+        console.log(this.props)
         if(!this.props.user.id){
         return (
             <Container>
+                {this.renderAlerts()}
                 <Form onSubmit={this.handleSubmit} id="login-form">
                     <Form.Group>
 
@@ -39,10 +45,16 @@ class LoginForm extends Component{
                     <Form.Group >
                         <Form.Label>Password</Form.Label>
                         <Form.Control onChange={this.handleOnChange} type="password" name="password" value={this.state.password} placeholder="Password" />
+                        <Form.Text id="passwordHelpBlock" muted>
+                             Must be 8-20 characters long.
+                             Contain 1 capital letter.
+                             Contain 1 lowercase letter.
+                             Contain 1 Symbol.
+                        </Form.Text>
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
-                            Submit
+                            Login
                     </Button>
                 </Form>
             </Container>
