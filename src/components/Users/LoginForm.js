@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from "react-router-dom";
 import { Form, Button, Container, Alert} from 'react-bootstrap';
 import { loginUser } from '../../actions/usersActions';
 
@@ -59,7 +60,9 @@ class LoginForm extends Component{
                 </Form>
             </Container>
             )} else {
-                return ( <>{this.props.history.push(`/users/${this.props.user.id}/recipes`)}</>)
+                return (
+                    <Redirect to={`/users/${this.props.user.id}/recipes`}/>
+                )
             }
     }
 }

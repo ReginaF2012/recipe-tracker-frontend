@@ -1,5 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import { Form, Button, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -16,11 +17,12 @@ class RecipeForm extends Component{
 
     render(){
         if(!this.props.user.id){
-            return (<>{this.props.history.push('/login')}</>)
+            return (<Redirect to="/login"/>)
         }else{
         return(
             <Container>
                 <Form>
+                    <h1>New Recipe Form</h1>
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
                         <Form.Control type="text" placeholder="Enter Recipe Name" />
@@ -29,6 +31,16 @@ class RecipeForm extends Component{
                         <Form.Label>Summary</Form.Label>
                         <Form.Control as="textarea" rows="3" placeholder="Write a brief summary" />
                     </Form.Group>
+                    <h2>Ingredients</h2>
+                    <Form.Group>
+                        <Form.Label>Ingredient Name</Form.Label>
+                        <Form.Control type="text" placeholder="Name of Ingredient"/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Amount</Form.Label>
+                        <Form.Control type="text" placeholder="Amount of Ingredient"/>
+                    </Form.Group>
+                    <Button>Add Another Ingredient</Button>
                 </Form>
             </Container>
         )}
