@@ -7,11 +7,127 @@
   pointer-events: none;
 }
 
+.recipe-summary{
+  padding: 2em 2em;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+}
+.recipe-image-container{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+
+.recipe-container > * {
+  margin: auto;
+  width: 50%;
+  font-size: large;
+}
+
+.ingredients-list {
+  display: block;
+  list-style: none;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+li {
+  list-style-type: none;
+  margin-bottom: .625em;
+  line-height: 1em;
+
+}
+
+
+.ingredients-list li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  font-size: 30px;
+  color: rgb(155, 155, 155); /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: .75em; /* Also needed for space (tweak if needed) */
+  margin-left: -1.25em; /* Also needed for space (tweak if needed) */
+}
+
+
+ol {
+  list-style: none;
+  counter-reset: my-awesome-counter;
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+}
+ol li {
+  counter-increment: my-awesome-counter;
+  margin-bottom: 1.3em;
+}
+ol li::before {
+  content: counter(my-awesome-counter) ". ";
+  color: rgb(155, 155, 155);
+  font-weight: bold;
+}
+
+.recipe-instructions {
+  display: block;
+  list-style: none;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.recipe-header{
+  margin: auto;
+  width: 50%;
+  text-align: center;
+  padding-top: 5%;
+}
+
+.timer-icon{
+  padding-right: 3px
+}
+
+.prepTime-item-type{
+  line-height: 1rem;
+  margin: 0.25rem 0 0;
+  color: #999;
+}
+
+.prepTime-item-time{
+  font-family: "Source Sans Pro",Arial;
+  display: block;
+  line-height: 1.5rem;
+  float: left;
+  width: 45px;
+}
+
+.prepTime-item{
+  float: left;
+}
+
+
+
+.prepTime-servings {
+  list-style-type: none;
+  margin-left: -1em;
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
 
 .App-header {
   background-color: #282c34;
