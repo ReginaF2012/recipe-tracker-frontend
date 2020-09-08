@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import Recipe from '../Recipes/Recipe';
+import RecipeCards from './RecipeCards';
 import { CardColumns } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -8,7 +8,7 @@ class Recipes extends Component {
 
     makeRecipeCards = () => {
          return this.props.recipes.map(recipe => {
-            return Recipe(recipe)
+            return RecipeCards(recipe)
          })
     }
 

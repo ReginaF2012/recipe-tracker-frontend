@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component, Fragment } from 'react';
 import { Redirect } from "react-router-dom";
-import { Form, Button, Container, FormControl } from 'react-bootstrap';
+import { Form, Button, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { postRecipe } from '../../actions/recipesActions';
 
@@ -30,7 +30,7 @@ class RecipeForm extends Component{
         let index = parseInt(event.target.id.split('-')[3])
         let ingredients_attributes = [...this.state.ingredients_attributes]
         ingredients_attributes[index] = { ...ingredients_attributes[index], [event.target.name]: event.target.value}
-        this.setState({...this.state, ingredients_attributes}, () => console.log(this.state))
+        this.setState({...this.state, ingredients_attributes})
     }
 
     recipeOnChange = (event) => {
@@ -52,7 +52,7 @@ class RecipeForm extends Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
-        const recipe = this.state
+        const recipe = {recipe: this.state}
         this.props.addRecipe(recipe)
         this.setState({
             user_id: this.props.user.id,

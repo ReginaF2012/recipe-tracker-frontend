@@ -8,6 +8,8 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
+
+import Recipe from './Recipes/Recipe';
 import Recipes from './Recipes/Recipes';
 import NavBar from './NavBar';
 import RecipeForm from './Recipes/RecipeForm';
@@ -38,9 +40,19 @@ class App extends Component{
 
             <Route exact path="/recipes/new" render={props => (<RecipeForm {...props}/>)}/>
 
-            <Route exact path="/users/:id/recipes" render={props => (<Recipes 
-            recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))}
+            <Route exact path="/users/:id/recipes" render={props => (
+              <Recipes recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))}
             />)}/>
+
+            <Route exact path="/recipes/:id"
+              render={props => (
+              this.props.recipes.length > 0 ?
+                <Recipe recipe={
+                  this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id))
+                } /> :
+                <Redirect to='/recipes' />
+              )} 
+            />
 
           </Switch>
         </Router>     
