@@ -32,6 +32,10 @@ class LoginForm extends Component{
 
                         <Form.Label>Username</Form.Label>
                         <Form.Control onChange={this.handleOnChange} type="text" placeholder="Enter Username" name="username" value={this.state.username}/>
+                        <Form.Text id="passwordHelpBlock" muted>
+                             Must be 3-20 characters long.
+                             Contain only letters, numbers, and underscores.
+                        </Form.Text>
 
                     </Form.Group>
                     <Form.Group >

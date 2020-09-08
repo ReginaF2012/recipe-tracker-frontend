@@ -54,17 +54,6 @@ class RecipeForm extends Component{
         event.preventDefault()
         const recipe = {recipe: this.state}
         this.props.addRecipe(recipe)
-        this.setState({
-            user_id: this.props.user.id,
-            name: '',
-            summary: '',
-            servings: 1,
-            prep_time: '',
-            cook_time: '',
-            instructions: '',
-            ingredients_attributes: [{name: '', amount: ''}]
-        })
-
     }
 
     renderIngredientInputs = () => {
