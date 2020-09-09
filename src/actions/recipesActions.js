@@ -40,19 +40,8 @@ export const fetchRecipes = () => {
 
   export const deleteRecipe = (recipeId, ownProps) => {
       return (dispatch) => {
-          fetch(URL+`/${recipeId}`, {
-              method: "DELETE",
-              headers: {
-                "Content-type": 'application/json',
-                "Accepts": "application/json"
-            }
-          })
-          .then(resp => resp.json())
-          .then(json =>{
-              !!json.errors ? dispatch(ADD_ALERTS(json.errors)) :
-              dispatch(REMOVE_RECIPE(recipeId))
-              ownProps.history.push('/recipes')
-            })
-          .catch(errors => dispatch(ADD_ALERTS(errors)))
+        ownProps.history.push('/recipes')
+        dispatch(REMOVE_RECIPE(recipeId))
+        fetch(URL+`/${recipeId}`, { method: "DELETE"})
       }
   }

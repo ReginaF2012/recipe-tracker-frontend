@@ -35,25 +35,29 @@ class App extends Component{
               <Redirect to="/recipes" />
             </Route>
 
-            <Route exact path="/recipes" render={props => (<Recipes {...props} recipes={this.props.recipes} />)} />
-
             <Route exact path="/login" render={props => (<LoginForm {...props} />)} />
 
-            <Route exact path="/recipes/new" render={props => (<RecipeForm {...props}/>)}/>
+            <Route exact path="/recipes" render={props => (<Recipes {...props} recipes={this.props.recipes} />)} />
+
+            <Route exact path="/recipes/new" render={props => (<RecipeForm {...props}/>
+            )}/>
+
+            <Route exact path="/recipes/:id/edit" render={props => (
+              <RecipeForm {...props} />
+            )} />
+
+            <Route exact path="/recipes/:id"
+              render={props => (
+              this.props.recipes.length > 0 ?
+                <Recipe {...props} /> :
+                <Redirect to='/recipes' />
+              )} 
+            />
 
             <Route exact path="/users/:id/recipes" render={props => (
               <Recipes recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))}
             />)}/>
 
-            <Route exact path="/recipes/:id"
-              render={props => (
-              this.props.recipes.length > 0 ?
-                <Recipe recipe={
-                  this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id))
-                } /> :
-                <Redirect to='/recipes' />
-              )} 
-            />
 
           </Switch>
         </Router>     

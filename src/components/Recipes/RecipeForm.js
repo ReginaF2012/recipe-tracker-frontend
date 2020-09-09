@@ -10,19 +10,45 @@ import { postRecipe } from '../../actions/recipesActions';
 
 class RecipeForm extends Component{
 
-    state = {
+    isEdit = !!this.props.match.params.id
+
+    state = {  
         user_id: this.props.user.id,
-        name: '',
-        summary: '',
-        servings: 1,
-        prep_time: '',
-        cook_time: '',
-        instructions: '',
-        ingredients_attributes: [{name: '', amount: ''}]
+            name: '',
+            summary: '',
+            servings: 1,
+            prep_time: '',
+            cook_time: '',
+            instructions: [''],
+            ingredients_attributes: [{name: '', amount: ''}]      
+     }
+
+    componentDidMount(){
+        if(this.isEdit){
+            let recipes = this.props.recipes
+            let id = this.props.match.params.id
+            const recipe = recipes.find(recipe => recipe.id === parseInt(id))
+            this.setState({...recipe, instructions: recipe.instructions.split('\n'),ingredients_attributes: recipe.ingredients.map(ingredient => {
+                return {name: ingredient.name, amount: ingredient.recipes_ingredients[0].amount}
+                })
+            })
+        }
     }
-    
+
     addIngredientInput = () => {
         this.setState(prevState => ({...prevState, ingredients_attributes: [...prevState.ingredients_attributes, {name: '', amount: ''}]}))
+    }
+
+    instructionOnChange = (event) => {
+        event.persist()
+        let index = event.target.name
+        let instructions = this.state.instructions
+        instructions[index] = event.target.value
+        this.setState({instructions})
+    }
+
+    addInstructionsInput = () => {
+        this.setState(prevState => ({...prevState, instructions: [...prevState.instructions, '']}))
     }
 
     ingredientOnChange = (event) => {
@@ -52,16 +78,21 @@ class RecipeForm extends Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
-        const recipe = {recipe: this.state}
+        console.log(this.state.instructions)
+        const recipe = {recipe: {...this.state, instructions: this.state.instructions.join('\n')}}
+        // if this.props.match.url includes "edit"
+        // then this.props.editRecipe(recipe, this.props)
+        // else
         this.props.addRecipe(recipe, this.props)
     }
 
     renderIngredientInputs = () => {
+        
         return (
             <>
                 {this.state.ingredients_attributes.map((ingredient, index) => {
                     return (
-                    <Fragment key={index}>
+                    <Fragment key={`ingredient-${index+1}`}>
                     <Form.Group key={`ingredient-name-${index}`}>
                         {this.state.ingredients_attributes.length > 1 && (
                             <Button onClick={this.removeIngredient} id={`ingredient-index-${index}`} variant="danger" size="sm" style={{
@@ -83,6 +114,23 @@ class RecipeForm extends Component{
                     )
                 })}
             </>
+        )
+    }
+
+    renderInstructionInputs = () => {
+        return(
+        <Fragment>
+            {this.state.instructions.map((step, index) => {
+                return (
+                    <Fragment key={`instruction-${index+1}`}>
+                        <Form.Group key={`step-${index+1}`}>
+                            <Form.Label>Step {index+1}</Form.Label>
+                            <Form.Control type="text" value={step} onChange={this.instructionOnChange} name={index}/>
+                        </Form.Group>
+                    </Fragment>
+                )
+            })}
+        </Fragment>
         )
     }
 
@@ -119,10 +167,8 @@ class RecipeForm extends Component{
                     <Button onClick={this.addIngredientInput}>Add Another Ingredient</Button>
                     <br></br><br></br><br></br>
                     <h2>Instructions</h2>
-                    
-                    <Form.Group>
-                        <Form.Control as="textarea" rows="3" name="instructions" value={this.state.instructions} onChange={this.recipeOnChange} placeholder="Write Instructions" />
-                    </Form.Group>
+                    {this.renderInstructionInputs()}
+                    <Button onClick={this.addInstructionsInput}>Add Another Step</Button>
                     <Button type="Submit">Add Recipe</Button>
                 </Form>
             </Container>
@@ -133,7 +179,7 @@ class RecipeForm extends Component{
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        alerts: state.alerts
+        recipes: state.recipes
     }
 }
 
