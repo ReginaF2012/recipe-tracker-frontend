@@ -20,7 +20,7 @@ class RecipeForm extends Component{
         instructions: '',
         ingredients_attributes: [{name: '', amount: ''}]
     }
-
+    
     addIngredientInput = () => {
         this.setState(prevState => ({...prevState, ingredients_attributes: [...prevState.ingredients_attributes, {name: '', amount: ''}]}))
     }
@@ -53,7 +53,7 @@ class RecipeForm extends Component{
     handleSubmit = (event) => {
         event.preventDefault()
         const recipe = {recipe: this.state}
-        this.props.addRecipe(recipe)
+        this.props.addRecipe(recipe, this.props)
     }
 
     renderIngredientInputs = () => {
@@ -131,11 +131,14 @@ class RecipeForm extends Component{
 }
 
 const mapStateToProps = (state) => {
-    return {user: state.user}
+    return {
+        user: state.user,
+        alerts: state.alerts
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return { addRecipe: (recipe) => dispatch(postRecipe(recipe))}
+    return { addRecipe: (recipe, ownProps) => dispatch(postRecipe(recipe, ownProps))}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeForm)

@@ -1,12 +1,26 @@
 import React from 'react';
-import { Alert } from 'react-bootstrap';
+import { Component } from 'react';
+import Alert from './Alert';
+import { connect } from 'react-redux';
 
-const Alerts = ({alerts}) => {
-    return alerts.length > 0 && (
+
+class Alerts extends Component{
+     renderAlerts = (alerts) => {
+         return alerts.length > 0 && (
         alerts.map((alert, index) => {
-            return < Alert key={`alert-${index+1}`} variant="danger" >{alert}</Alert>
+            return < Alert key={`alert-${index+1}`} alert={alert} />
         })
-    )
+    )}
+
+    render(){
+        return <>{this.renderAlerts(this.props.alerts)}</>
+    }
 }
 
-export default Alerts
+const mapStateToProps = (state) => {
+    return {
+        alerts: [...state.alerts]
+    }
+}
+
+export default connect(mapStateToProps)(Alerts)

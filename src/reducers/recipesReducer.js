@@ -5,6 +5,8 @@ const recipesReducer = (state = [], action) => {
         return [...state, action.payload]
       case 'ADD_RECIPES':
         return action.payload
+      case 'REMOVE_RECIPE':
+        return state.filter(recipe => recipe.id !== action.payload)
       default:
         return state;
     }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
-import { fetchRecipes } from '../actions/recipesActions';
+import { fetchRecipes, deleteRecipe } from '../actions/recipesActions';
 import { connect } from 'react-redux';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -28,7 +29,7 @@ class App extends Component{
     return (
         <Router>
            < NavBar />
-           <Alerts alerts={this.props.alerts}/>
+           <Alerts />
           <Switch>
             <Route exact path="/">
               <Redirect to="/recipes" />
