@@ -35,8 +35,43 @@ class RecipeForm extends Component{
         }
     }
 
+    renderRemoveIngredientButton = (index) => {
+        return this.state.ingredients_attributes.length > 1 && (
+            <Button onClick={this.removeIngredient} id={`ingredient-index-${index}`} variant="danger" size="sm" style={{
+                marginLeft: "15px",
+                float: "right",
+                lineHeight: "20px",
+                cursor: "pointer",
+                transition:" 0.3s",
+              }}>&times; Remove</Button>
+        )
+    }
+
+    renderRemoveInstructionButton = (index) => {
+        return this.state.instructions.length > 1 && (
+            <Button onClick={this.removeInstruction} id={`instruction-index-${index}`} variant="danger" size="sm" style={{
+                marginLeft: "15px",
+                float: "right",
+                lineHeight: "20px",
+                cursor: "pointer",
+                transition:" 0.3s",
+              }}>&times; Remove</Button>
+        )
+    }
+
+
+
     addIngredientInput = () => {
         this.setState(prevState => ({...prevState, ingredients_attributes: [...prevState.ingredients_attributes, {name: '', amount: ''}]}))
+    }
+
+    removeInstruction = (event) => {
+        let index = parseInt(event.target.id.split('-')[2])
+        let instructions = [...this.state.instructions]
+        instructions.splice(index, 1)
+
+        this.setState({...this.state, instructions})
+
     }
 
     instructionOnChange = (event) => {
@@ -65,13 +100,9 @@ class RecipeForm extends Component{
     }
 
     removeIngredient = (event) => {
-        event.preventDefault()
         let index = parseInt(event.target.id.split('-')[2])
-        let ingredients_attributes = [
-            ...this.state.ingredients_attributes.slice(0, index),
-            ...this.state.ingredients_attributes.slice(index + 1)
-          ]
-
+        let ingredients_attributes = [...this.state.ingredients_attributes]
+        ingredients_attributes.splice(index, 1)
         this.setState({...this.state, ingredients_attributes})
 
     }
@@ -94,15 +125,7 @@ class RecipeForm extends Component{
                     return (
                     <Fragment key={`ingredient-${index+1}`}>
                     <Form.Group key={`ingredient-name-${index}`}>
-                        {this.state.ingredients_attributes.length > 1 && (
-                            <Button onClick={this.removeIngredient} id={`ingredient-index-${index}`} variant="danger" size="sm" style={{
-                                marginLeft: "15px",
-                                float: "right",
-                                lineHeight: "20px",
-                                cursor: "pointer",
-                                transition:" 0.3s",
-                              }}>&times; Remove</Button>
-                        )}
+                        {this.renderRemoveIngredientButton(index)}
                         <Form.Label>Ingredient Name</Form.Label>
                         <Form.Control required type="text" onChange={this.ingredientOnChange} id={`ingredient-name-input-${index}`} name="name" value={ingredient.name} placeholder="Name of Ingredient"/>
                     </Form.Group>
@@ -123,6 +146,7 @@ class RecipeForm extends Component{
             {this.state.instructions.map((step, index) => {
                 return (
                     <Fragment key={`instruction-${index+1}`}>
+                        {this.renderRemoveInstructionButton()}
                         <Form.Group key={`step-${index+1}`}>
                             <Form.Label>Step {index+1}</Form.Label>
                             <Form.Control type="text" value={step} onChange={this.instructionOnChange} name={index}/>
@@ -169,6 +193,7 @@ class RecipeForm extends Component{
                     <h2>Instructions</h2>
                     {this.renderInstructionInputs()}
                     <Button onClick={this.addInstructionsInput}>Add Another Step</Button>
+                    <br></br><br></br><br></br>
                     <Button type="Submit">Add Recipe</Button>
                 </Form>
             </Container>
