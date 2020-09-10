@@ -4,6 +4,7 @@ const URL = "http://localhost:3001/api/v1/recipes"
 const ADD_RECIPES = (payload) => ({type: "ADD_RECIPES", payload})
 const ADD_RECIPE = (payload) => ({type: "ADD_RECIPE", payload})
 const REMOVE_RECIPE = (payload) => ({type: "REMOVE_RECIPE", payload})
+const EDIT_RECIPE = (payload) => ({type: "EDIT_RECIPE", payload})
 
 export const fetchRecipes = () => {
     return (dispatch) => {
@@ -12,7 +13,7 @@ export const fetchRecipes = () => {
         .then(json => {
             dispatch(ADD_RECIPES(json))
         }) 
-        .catch(errors => dispatch(ADD_ALERTS(errors)))
+        .catch(errors => console.log(errors))
     }
     
   }
@@ -34,7 +35,7 @@ export const fetchRecipes = () => {
              dispatch(ADD_RECIPE(json))
              ownProps.history.push(`/recipes/${json.id}`)
             })
-            .catch(errors => dispatch(ADD_ALERTS(errors)))
+            .catch(errors => console.log(errors))
       }
   }
 
@@ -43,5 +44,25 @@ export const fetchRecipes = () => {
         ownProps.history.push('/recipes')
         dispatch(REMOVE_RECIPE(recipeId))
         fetch(URL+`/${recipeId}`, { method: "DELETE"})
+      }
+  }
+
+  export const editRecipe = (recipe, ownProps) => {
+      return (dispatch) => {
+          fetch(URL+`/${recipe.recipe.id}`,{
+              method: "PATCH",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Accepts": "application/json"
+              },
+              body: JSON.stringify(recipe)
+          })
+          .then( resp => resp.json())
+          .then(json => {
+              !!json.errors ? ADD_ALERTS(json.errors) :
+              dispatch(EDIT_RECIPE(json))
+              ownProps.history.push(`/recipes/${json.id}`)
+          })
+          .catch(errors => console.log(errors))
       }
   }

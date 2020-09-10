@@ -3,7 +3,7 @@ import { Component, Fragment } from 'react';
 import { Redirect } from "react-router-dom";
 import { Form, Button, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { postRecipe } from '../../actions/recipesActions';
+import { postRecipe, editRecipe } from '../../actions/recipesActions';
 
 
 // used this stack overflow https://stackoverflow.com/questions/36512686/react-dynamically-add-input-fields-to-form to figure out dynamic input fields
@@ -14,13 +14,13 @@ class RecipeForm extends Component{
 
     state = {  
         user_id: this.props.user.id,
-            name: '',
-            summary: '',
-            servings: 1,
-            prep_time: '',
-            cook_time: '',
-            instructions: [''],
-            ingredients_attributes: [{name: '', amount: ''}]      
+        name: '',
+        summary: '',
+        servings: 1,
+        prep_time: '',
+        cook_time: '',
+        instructions: [''],
+        ingredients_attributes: [{name: '', amount: ''}]      
      }
 
     componentDidMount(){
@@ -111,10 +111,8 @@ class RecipeForm extends Component{
         event.preventDefault()
         console.log(this.state.instructions)
         const recipe = {recipe: {...this.state, instructions: this.state.instructions.join('\n')}}
-        // if this.props.match.url includes "edit"
-        // then this.props.editRecipe(recipe, this.props)
-        // else
-        this.props.addRecipe(recipe, this.props)
+       
+        this.isEdit ? this.props.editRecipe(recipe, this.props) : this.props.addRecipe(recipe, this.props)
     }
 
     renderIngredientInputs = () => {
@@ -165,7 +163,7 @@ class RecipeForm extends Component{
         return(
             <Container>
                 <Form onSubmit={this.handleSubmit}>
-                    <h1>New Recipe Form</h1>
+                    <h1>Recipe Form</h1>
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
                         <Form.Control required type="text" name="name" value={this.state.name} onChange={this.recipeOnChange} placeholder="Enter Recipe Name" />
@@ -194,7 +192,7 @@ class RecipeForm extends Component{
                     {this.renderInstructionInputs()}
                     <Button onClick={this.addInstructionsInput}>Add Another Step</Button>
                     <br></br><br></br><br></br>
-                    <Button type="Submit">Add Recipe</Button>
+                    <Button type="Submit">{this.isEdit ? "Edit Recipe" : "Add Recipe"}</Button>
                 </Form>
             </Container>
         )}
@@ -209,7 +207,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return { addRecipe: (recipe, ownProps) => dispatch(postRecipe(recipe, ownProps))}
+    return { 
+        addRecipe: (recipe, ownProps) => dispatch(postRecipe(recipe, ownProps)),
+        editRecipe: (recipe, ownProps) => dispatch(editRecipe(recipe, ownProps))
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeForm)
