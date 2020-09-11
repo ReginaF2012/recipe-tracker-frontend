@@ -95,7 +95,6 @@ class RecipeForm extends Component{
     }
 
     recipeOnChange = (event) => {
-        event.persist()
         this.setState({[event.target.name]: event.target.value})
     }
 
@@ -156,9 +155,6 @@ class RecipeForm extends Component{
     }
 
     render(){
-        if(!this.props.user.id){
-            return (<Redirect to="/login"/>)
-        }else{
         return(
             <Container>
                 <Form onSubmit={this.handleSubmit}>
@@ -194,7 +190,7 @@ class RecipeForm extends Component{
                     <Button type="Submit">{this.isEdit ? "Edit Recipe" : "Add Recipe"}</Button>
                 </Form>
             </Container>
-        )}
+        )
     }
 }
 

@@ -3,24 +3,49 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav, Form, Button, FormControl } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { withRouter } from 'react-router'
 
 import { logoutUser } from '../actions/usersActions'
 
 class NavigationBar extends Component{
 
-    handleLogout = (event) => {
+    state={
+        searchValue: '',
+        renderSearchResults: false
+    }
+
+    handleLogout = () => {
         this.props.logoutUser()
+    }
+
+    handleOnChange = (event) => {
+        this.setState({[event.target.name]: event.target.value})
+    }
+
+    handleSearch = (event) => {
+        event.preventDefault()
+        this.setState({renderSearchResults: true})
+        let searchTerm = this.state.searchValue
+        this.setState({searchValue: ''})
+        this.props.history.push(`/recipes/search/${searchTerm.replace(/\s+/g, '-').toLowerCase()}`)
     }
 
     renderLoginOrLogout = () => {
     
         if(!this.props.user.id){
             return (
-                <LinkContainer to="/login">
-                    <Nav.Link >
-                        Login
-                    </Nav.Link>
-                </LinkContainer>
+                <>
+                    <LinkContainer to="/signup">
+                        <Nav.Link >
+                            Sign Up
+                        </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/login">
+                        <Nav.Link >
+                            Login
+                        </Nav.Link>
+                    </LinkContainer>
+                </>
                 
             )
         } else {
@@ -68,9 +93,9 @@ class NavigationBar extends Component{
                 {this.renderLoginOrLogout()}
 
             </Nav>
-            <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Button variant="outline-info">Search</Button>
+            <Form onSubmit={this.handleSearch} inline>
+                <FormControl type="text" name="searchValue" value={this.state.searchValue} onChange={this.handleOnChange} placeholder="Search" className="mr-sm-2" />
+                <Button type="submit" variant="outline-info">Search</Button>
             </Form>
         </Navbar>
          )
@@ -89,4 +114,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavigationBar))

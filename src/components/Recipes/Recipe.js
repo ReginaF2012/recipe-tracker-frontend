@@ -6,21 +6,21 @@ import { connect } from 'react-redux';
 
 export class Recipe extends Component{
 
-    recipe = this.props.recipes.find(recipe => recipe.id === parseInt(this.props.match.params.id))
-
-    instructionsArr = this.recipe.instructions.split('\n')
+ 
 
     handleDeleteClick = () => {
-        this.props.deleteRecipe(this.recipe.id, this.props)
+        this.props.deleteRecipe(this.props.recipe.id, this.props)
     }
 
     renderInstructions = () => {
-        if(this.instructionsArr.length > 1){
+        let instructionsArr = this.props.recipe.instructions.split('\n')
+
+        if(instructionsArr.length > 1){
             return (
                 <div className="recipe-instructions">
                     <h3>Instructions</h3>
                     <ol className="instructions-list">
-                        {this.instructionsArr.map((step, index) => {
+                        {instructionsArr.map((step, index) => {
                             return <li key={`step-${index+1}`}>{step}</li>
                         })}
                     </ol>
@@ -30,24 +30,24 @@ export class Recipe extends Component{
             return (
                 <div className="recipe-instructions">
                     <h3>Instructions</h3>
-                    <p>{this.instructionsArr[0]}</p>
+                    <p>{instructionsArr[0]}</p>
                 </div>
             )
         }
     }
 
     render(){
-        const [recipePrepTimeNum, recipePrepTimeUnit] = this.recipe.prep_time.split(" ")
-        const [recipeCookTimeNum, recipeCookTimeUnit] = this.recipe.cook_time.split(" ")
+        const [recipePrepTimeNum, recipePrepTimeUnit] = this.props.recipe.prep_time.split(" ")
+        const [recipeCookTimeNum, recipeCookTimeUnit] = this.props.recipe.cook_time.split(" ")
         return (
         <Container className="recipe-container">
             <div className="recipe-header">
-               <h2>{this.recipe.name}</h2>
+               <h2>{this.props.recipe.name}</h2>
                <div className="recipe-image-container">
-                  <Image src={this.recipe.image_url} alt={this.recipe.name+' image'} fluid /> 
+                  <Image src={this.props.recipe.image_url} alt={this.props.recipe.name+' image'} fluid /> 
                </div>
                 <h3>Summary</h3>
-                <p className="recipe-summary">{this.recipe.summary}</p> 
+                <p className="recipe-summary">{this.props.recipe.summary}</p> 
             </div>
             
             <div className="recipe-prep-info">
@@ -63,7 +63,7 @@ export class Recipe extends Component{
                     </li>
                     <li className="prepTime-item" >
                         <p className="prepTime-item-type" >Servings</p>
-                        <span className="prepTime-item-time">{this.recipe.servings}</span>
+                        <span className="prepTime-item-time">{this.props.recipe.servings}</span>
                     </li>
             </ul>
             </div>
@@ -71,7 +71,7 @@ export class Recipe extends Component{
                 <div className="ingredients-list">
                     <h3>Ingredients</h3>
                     <ul>
-                        {this.recipe.ingredients.map((ingredient, index) => {
+                        {this.props.recipe.ingredients.map((ingredient, index) => {
                         const amount = ingredient.recipes_ingredients[0].amount
                         return <li key={`ingredient-${index+1}`}>{amount} {ingredient.name}</li>
                         })}
@@ -80,9 +80,9 @@ export class Recipe extends Component{
                 {this.renderInstructions()}
             </div>
             
-                { this.props.user.id === this.recipe.user_id && (
+                { this.props.user.id === this.props.recipe.user_id && (
                     <div className="btns-container">
-                        <Button onClick={() => {this.props.history.push(`/recipes/${this.recipe.id}/edit`)}} variant="primary" size="lg" block>
+                        <Button onClick={() => {this.props.history.push(`/recipes/${this.props.recipe.id}/edit`)}} variant="primary" size="lg" block>
                             Edit This Recipe
                         </Button>
                         <Button onClick={this.handleDeleteClick} variant="danger" size="lg" block>
@@ -99,8 +99,7 @@ export class Recipe extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user,
-        recipes: state.recipes
+        user: state.user
     }
 }
 

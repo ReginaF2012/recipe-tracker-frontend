@@ -15,7 +15,7 @@ import Recipe from './Recipes/Recipe';
 import Recipes from './Recipes/Recipes';
 import NavBar from './NavBar';
 import RecipeForm from './Recipes/RecipeForm';
-import LoginForm from './Users/LoginForm'
+import LoginSignupForm from './Users/LoginSignupForm'
 import Alerts from './Alerts';
 
 
@@ -26,6 +26,11 @@ class App extends Component{
     if(!!localStorage.getItem('token')){
       this.props.autoLoginUser()
     }
+  }
+
+  recipesFilteredBySearch(searchTerm){
+    let filter = searchTerm.replace(/-/g, ' ')
+    return this.props.recipes.filter(recipe => recipe.name.toLowerCase().includes(filter))
   }
 
 
@@ -39,28 +44,51 @@ class App extends Component{
               <Redirect to="/recipes" />
             </Route>
 
-            <Route exact path="/login" render={props => (<LoginForm {...props} />)} />
-
-            <Route exact path="/recipes" render={props => (<Recipes {...props} recipes={this.props.recipes} />)} />
-
-            <Route exact path="/recipes/new" render={props => (<RecipeForm {...props}/>
-            )}/>
-
-            <Route exact path="/recipes/:id/edit" render={props => (
-              !!this.props.user.id ? <RecipeForm {...props} /> : <Redirect to="/recipes"></Redirect>
-            )} />
-
-            <Route exact path="/recipes/:id"
+            <Route path="/login" 
               render={props => (
-              this.props.recipes.length > 0 ?
-                <Recipe {...props} /> :
-                <Redirect to='/recipes' />
+                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/ recipes`}/> : <LoginSignupForm {...props} />
               )} 
             />
 
-            <Route exact path="/users/:id/recipes" render={props => (
-              <Recipes recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))}
-            />)}/>
+            <Route path="/signup" 
+              render={props => (
+                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/ recipes`}/> : <LoginSignupForm {...props} />
+              )}
+            />
+
+            <Route exact path="/recipes" 
+              render={()=><Recipes recipes={this.props.recipes}/>} 
+            />
+
+            <Route exact path="/recipes/new" 
+              render={props => (
+              !!this.props.user.id ? <RecipeForm {...props}/> : <Redirect to="/login"/>
+              )}
+            />
+
+            <Route exact path="/recipes/:id/edit" 
+              render={props => (
+                !!this.props.user.id ? <RecipeForm {...props} /> : <Redirect to="/recipes"></Redirect>
+              )} 
+            />
+
+            <Route exact path="/recipes/:id"
+              render={props => (
+                this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id)) ? <Recipe recipe={this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id))} /> : <Redirect to="/recipes"/>
+              )} 
+            />
+
+            <Route exact path="/recipes/search/:searchTerm" 
+              render={props => (
+                <Recipes recipes={this.recipesFilteredBySearch(props.match.params.searchTerm)}/>
+              )}
+            />
+
+            <Route exact path="/users/:id/recipes" 
+              render={props => (
+                <Recipes recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))} />
+              )}
+            />
 
 
           </Switch>

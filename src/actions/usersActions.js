@@ -2,6 +2,7 @@ import { ADD_ALERTS } from './alertsActions';
 const URL = "http://localhost:3001/api/v1/users"
 const LOGIN = (user) => ({type: "LOGIN", payload: user})
 const LOGOUT = {type: "LOGOUT"}
+const SIGN_UP = (user) => ({type: "SIGN UP", payload: user})
 
 export const loginUser = (user) => {
     return (dispatch) => {
@@ -11,7 +12,7 @@ export const loginUser = (user) => {
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify({user: {...user}})
         })
         .then(resp => resp.json())
         .then(json => {
@@ -40,4 +41,22 @@ export const autoLoginUser = (dispatch) => {
             !!json.errors ? dispatch(ADD_ALERTS(json.errors)) : dispatch(LOGIN(json))
         })
         .catch(errors => console.log(errors))}
+}
+
+export const signUpUser = (user) => {
+    return (dispatch) => {
+        fetch(URL, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify({user: {...user}})
+        })
+        .then(resp => resp.json())
+        .then(json => {
+            !!json.errors ? dispatch(ADD_ALERTS(json.errors)) : dispatch(SIGN_UP(json))
+        })
+        .catch(errors => console.log(errors))
+    }
 }
