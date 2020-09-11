@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
-import { fetchRecipes, deleteRecipe } from '../actions/recipesActions';
+import { fetchRecipes } from '../actions/recipesActions';
+import { autoLoginUser } from '../actions/usersActions';
 import { connect } from 'react-redux';
 
 import {
@@ -22,6 +23,9 @@ class App extends Component{
 
   componentDidMount(){
     this.props.fetchRecipes()
+    if(!!localStorage.getItem('token')){
+      this.props.autoLoginUser()
+    }
   }
 
 
@@ -43,7 +47,7 @@ class App extends Component{
             )}/>
 
             <Route exact path="/recipes/:id/edit" render={props => (
-              <RecipeForm {...props} />
+              !!this.props.user.id ? <RecipeForm {...props} /> : <Redirect to="/recipes"></Redirect>
             )} />
 
             <Route exact path="/recipes/:id"
@@ -67,7 +71,8 @@ class App extends Component{
 
 const mapDispatchToProps = (dispatch) => {
   return {
-          fetchRecipes: () => dispatch(fetchRecipes())
+          fetchRecipes: () => dispatch(fetchRecipes()),
+          autoLoginUser: () => dispatch(autoLoginUser())
       }
 }
 

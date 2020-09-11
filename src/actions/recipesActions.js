@@ -25,7 +25,8 @@ export const fetchRecipes = () => {
               method: "POST",
               headers: {
                   "Content-type": 'application/json',
-                  "Accepts": "application/json"
+                  "Accepts": "application/json",
+                  "Authorization": `Bearer ${localStorage.getItem('token')}`
               },
               body: JSON.stringify(recipe)
           })
@@ -43,7 +44,13 @@ export const fetchRecipes = () => {
       return (dispatch) => {
         ownProps.history.push('/recipes')
         dispatch(REMOVE_RECIPE(recipeId))
-        fetch(URL+`/${recipeId}`, { method: "DELETE"})
+        fetch(URL+`/${recipeId}`, { 
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json",
+                "Accepts": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }})
       }
   }
 
@@ -53,7 +60,8 @@ export const fetchRecipes = () => {
               method: "PATCH",
               headers: {
                   "Content-Type": "application/json",
-                  "Accepts": "application/json"
+                  "Accepts": "application/json",
+                  "Authorization": `Bearer ${localStorage.getItem('token')}`
               },
               body: JSON.stringify(recipe)
           })

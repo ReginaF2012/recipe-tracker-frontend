@@ -109,7 +109,6 @@ class RecipeForm extends Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
-        console.log(this.state.instructions)
         const recipe = {recipe: {...this.state, instructions: this.state.instructions.join('\n')}}
        
         this.isEdit ? this.props.editRecipe(recipe, this.props) : this.props.addRecipe(recipe, this.props)
