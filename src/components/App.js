@@ -46,13 +46,13 @@ class App extends Component{
 
             <Route path="/login" 
               render={props => (
-                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/ recipes`}/> : <LoginSignupForm {...props} />
+                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/recipes`}/> : <LoginSignupForm {...props} />
               )} 
             />
 
             <Route path="/signup" 
               render={props => (
-                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/ recipes`}/> : <LoginSignupForm {...props} />
+                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/recipes`}/> : <LoginSignupForm {...props} />
               )}
             />
 
@@ -74,7 +74,7 @@ class App extends Component{
 
             <Route exact path="/recipes/:id"
               render={props => (
-                this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id)) ? <Recipe recipe={this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id))} /> : <Redirect to="/recipes"/>
+                this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id)) ? <Recipe {...props} recipe={this.props.recipes.find(recipe => recipe.id === parseInt(props.match.params.id))} /> : <Redirect to="/recipes"/>
               )} 
             />
 

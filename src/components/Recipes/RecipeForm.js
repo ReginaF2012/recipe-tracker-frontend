@@ -1,6 +1,5 @@
 import React from 'react';
 import { Component, Fragment } from 'react';
-import { Redirect } from "react-router-dom";
 import { Form, Button, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { postRecipe, editRecipe } from '../../actions/recipesActions';
@@ -14,6 +13,7 @@ class RecipeForm extends Component{
 
     state = {  
         user_id: this.props.user.id,
+        image: '',
         name: '',
         summary: '',
         servings: 1,
@@ -94,6 +94,11 @@ class RecipeForm extends Component{
         this.setState({...this.state, ingredients_attributes})
     }
 
+    imageOnChange = (event) => {
+        event.persist()
+        this.setState({image: event.target.files[0]})
+    }
+
     recipeOnChange = (event) => {
         this.setState({[event.target.name]: event.target.value})
     }
@@ -108,7 +113,7 @@ class RecipeForm extends Component{
 
     handleSubmit = (event) => {
         event.preventDefault()
-        const recipe = {recipe: {...this.state, instructions: this.state.instructions.join('\n')}}
+        const recipe = {...this.state, instructions: this.state.instructions.join('\n')}
        
         this.isEdit ? this.props.editRecipe(recipe, this.props) : this.props.addRecipe(recipe, this.props)
     }
@@ -159,6 +164,10 @@ class RecipeForm extends Component{
             <Container>
                 <Form onSubmit={this.handleSubmit}>
                     <h1>Recipe Form</h1>
+                    <Form.Group>
+                        <Form.Label>Image Upload</Form.Label>
+                        <Form.Control type="file" name="image" onChange={this.imageOnChange}/>
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label>Name</Form.Label>
                         <Form.Control required type="text" name="name" value={this.state.name} onChange={this.recipeOnChange} placeholder="Enter Recipe Name" />

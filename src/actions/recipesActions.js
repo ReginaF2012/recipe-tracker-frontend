@@ -1,10 +1,13 @@
 import { ADD_ALERTS } from "./alertsActions";
+import { serialize } from 'object-to-formdata';
 
 const URL = "http://localhost:3001/api/v1/recipes"
 const ADD_RECIPES = (payload) => ({type: "ADD_RECIPES", payload})
 const ADD_RECIPE = (payload) => ({type: "ADD_RECIPE", payload})
 const REMOVE_RECIPE = (payload) => ({type: "REMOVE_RECIPE", payload})
 const EDIT_RECIPE = (payload) => ({type: "EDIT_RECIPE", payload})
+
+
 
 export const fetchRecipes = () => {
     return (dispatch) => {
@@ -19,16 +22,17 @@ export const fetchRecipes = () => {
   }
   
 
-  export const postRecipe = (recipe, ownProps) => {
+  export const postRecipe = (recipeObj, ownProps) => {
       return (dispatch) => {
+          const formData = new FormData()
+          formData.append('image', recipeObj.image)
+          const recipe = serialize({recipe: recipeObj}, null,formData)
           fetch(URL, {
               method: "POST",
               headers: {
-                  "Content-type": 'application/json',
                   "Accepts": "application/json",
-                  "Authorization": `Bearer ${localStorage.getItem('token')}`
-              },
-              body: JSON.stringify(recipe)
+                  "Authorization": `Bearer ${localStorage.getItem('token')}`},
+              body: recipe
           })
           .then(resp => resp.json())
           .then(json => {
@@ -54,16 +58,17 @@ export const fetchRecipes = () => {
       }
   }
 
-  export const editRecipe = (recipe, ownProps) => {
+  export const editRecipe = (recipeObj, ownProps) => {
+        const formData = new FormData()
+        formData.append('image', recipeObj.image)
+        const recipe = serialize({recipe: recipeObj}, null, formData)
       return (dispatch) => {
-          fetch(URL+`/${recipe.recipe.id}`,{
+          fetch(URL+`/${recipeObj.id}`,{
               method: "PATCH",
               headers: {
-                  "Content-Type": "application/json",
-                  "Accepts": "application/json",
                   "Authorization": `Bearer ${localStorage.getItem('token')}`
               },
-              body: JSON.stringify(recipe)
+              body: formData
           })
           .then( resp => resp.json())
           .then(json => {
