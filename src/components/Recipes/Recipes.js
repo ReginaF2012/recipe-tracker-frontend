@@ -1,15 +1,15 @@
 import React from 'react';
 import { Component } from 'react';
 import RecipeCards from './RecipeCards';
-import { CardColumns } from 'react-bootstrap';
+import { CardGroup } from 'react-bootstrap';
 
 
 export default class Recipes extends Component{
 
     makeRecipeCards = (recipes) => {
         if(recipes.length> 0){
-            return recipes.map(recipe => {
-                return RecipeCards(recipe)
+            return recipes.map((recipe, index) => {
+                return <div key={`recipe-${index+1}`}className="row with-margin">{RecipeCards(recipe)}</div>
             })
         } else {
             return <p>No recipes yet...</p>
@@ -17,11 +17,12 @@ export default class Recipes extends Component{
     }
 
         render(){
-            return (
-                <CardColumns >  
-                    {this.makeRecipeCards(this.props.recipes)}
-                </CardColumns>
 
+            return (
+                <CardGroup>
+                    {this.makeRecipeCards(this.props.recipes)}
+                </CardGroup>
+                
             )
         }
 }

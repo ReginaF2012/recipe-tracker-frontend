@@ -12,6 +12,13 @@ export class Recipe extends Component{
         this.props.deleteRecipe(this.props.recipe.id, this.props)
     }
 
+    renderIngredients = () => {
+        return this.props.recipe.ingredients.map((ingredient, index) => {
+            const amount = ingredient.recipes_ingredients[0].amount 
+            return <li key={`ingredient-${index+1}`}>{amount} {ingredient.name}</li>
+        })
+    }
+
     renderInstructions = () => {
         let instructionsArr = this.props.recipe.instructions.split('\n')
 
@@ -35,6 +42,7 @@ export class Recipe extends Component{
             )
         }
     }
+
 
     render(){
         const [recipePrepTimeNum, recipePrepTimeUnit] = this.props.recipe.prep_time.split(" ")
@@ -71,10 +79,7 @@ export class Recipe extends Component{
                 <div className="ingredients-list">
                     <h3>Ingredients</h3>
                     <ul>
-                        {this.props.recipe.ingredients.map((ingredient, index) => {
-                        const amount = ingredient.recipes_ingredients[0].amount
-                        return <li key={`ingredient-${index+1}`}>{amount} {ingredient.name}</li>
-                        })}
+                        { this.renderIngredients() }
                     </ul>
                 </div>
                 {this.renderInstructions()}

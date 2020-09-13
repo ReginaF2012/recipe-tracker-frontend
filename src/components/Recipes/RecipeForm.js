@@ -37,7 +37,7 @@ class RecipeForm extends Component{
 
     renderRemoveIngredientButton = (index) => {
         return this.state.ingredients_attributes.length > 1 && (
-            <Button onClick={this.removeIngredient} id={`ingredient-index-${index}`} variant="danger" size="sm" style={{
+            <Button onClick={this.removeIngredient} name={index} id={`remove-ingredient-${index+1}`} variant="danger" size="sm" style={{
                 marginLeft: "15px",
                 float: "right",
                 lineHeight: "20px",
@@ -49,7 +49,7 @@ class RecipeForm extends Component{
 
     renderRemoveInstructionButton = (index) => {
         return this.state.instructions.length > 1 && (
-            <Button onClick={this.removeInstruction} id={`instruction-index-${index}`} variant="danger" size="sm" style={{
+            <Button onClick={this.removeInstruction} name={index} id={`remove-instruction-index-${index+1}`} variant="danger" size="sm" style={{
                 marginLeft: "15px",
                 float: "right",
                 lineHeight: "20px",
@@ -66,9 +66,9 @@ class RecipeForm extends Component{
     }
 
     removeInstruction = (event) => {
-        let index = parseInt(event.target.id.split('-')[2])
+        let index = parseInt(event.target.name)
         let instructions = [...this.state.instructions]
-        instructions.splice(index, 1)
+        instructions = [...instructions.slice(0, index), ...instructions.slice(index+1)]
 
         this.setState({...this.state, instructions})
 
@@ -104,9 +104,9 @@ class RecipeForm extends Component{
     }
 
     removeIngredient = (event) => {
-        let index = parseInt(event.target.id.split('-')[2])
+        let index = parseInt(event.target.name)
         let ingredients_attributes = [...this.state.ingredients_attributes]
-        ingredients_attributes.splice(index, 1)
+        ingredients_attributes = [...ingredients_attributes.slice(0, index), ...ingredients_attributes.slice(index+1)]
         this.setState({...this.state, ingredients_attributes})
 
     }
@@ -147,7 +147,7 @@ class RecipeForm extends Component{
             {this.state.instructions.map((step, index) => {
                 return (
                     <Fragment key={`instruction-${index+1}`}>
-                        {this.renderRemoveInstructionButton()}
+                        {this.renderRemoveInstructionButton(index)}
                         <Form.Group key={`step-${index+1}`}>
                             <Form.Label>Step {index+1}</Form.Label>
                             <Form.Control type="text" value={step} onChange={this.instructionOnChange} name={index}/>

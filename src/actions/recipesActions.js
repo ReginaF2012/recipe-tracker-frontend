@@ -68,7 +68,7 @@ export const fetchRecipes = () => {
               headers: {
                   "Authorization": `Bearer ${localStorage.getItem('token')}`
               },
-              body: formData
+              body: recipe
           })
           .then( resp => resp.json())
           .then(json => {
