@@ -16,6 +16,7 @@ import Recipes from '../container/Recipes/Recipes';
 import NavBar from './NavBar';
 import RecipeForm from './Recipes/RecipeForm';
 import Login from '../container/Users/Login';
+import SignUp from '../container/Users/SignUp';
 import Alerts from '../container/Alerts/Alerts';
 
 
@@ -51,11 +52,11 @@ class App extends Component{
               )} 
             />
 
-            {/* <Route path="/signup" 
-              render={props => (
-                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/recipes`}/> : <LoginSignupForm {...props} />
+            <Route path="/signup" 
+              render={() => (
+                !!this.props.user.id ? <Redirect to={`/users/${this.props.user.id}/recipes`}/> : <SignUp/>
               )}
-            /> */}
+            />
 
             <Route exact path="/recipes" 
               render={()=><Recipes recipes={this.props.recipes}/>} 
