@@ -12,12 +12,11 @@ import {
 } from "react-router-dom";
 
 import Recipe from './Recipes/Recipe';
-import Recipes from './Recipes/Recipes';
+import Recipes from '../container/Recipes/Recipes';
 import NavBar from './NavBar';
 import RecipeForm from './Recipes/RecipeForm';
 import LoginSignupForm from './Users/LoginSignupForm'
-import Alerts from './Alerts';
-
+import Alerts from '../container/Alerts/Alerts';
 
 
 
@@ -40,7 +39,7 @@ class App extends Component{
     return (
         <Router>
            < NavBar />
-           <Alerts />
+            { this.props.alerts.length > 0 && <Alerts alerts={this.props.alerts}/>}
           <Switch>
             <Route exact path="/">
               <Redirect to="/recipes" />
@@ -62,13 +61,13 @@ class App extends Component{
               render={()=><Recipes recipes={this.props.recipes}/>} 
             />
 
-            <Route exact path="/recipes/new" 
+            <Route path="/recipes/new" 
               render={props => (
               !!this.props.user.id ? <RecipeForm {...props}/> : <Redirect to="/login"/>
               )}
             />
 
-            <Route exact path="/recipes/:id/edit" 
+            <Route path="/recipes/:id/edit" 
               render={props => (
                 !!this.props.user.id ? <RecipeForm {...props} /> : <Redirect to="/recipes"></Redirect>
               )} 
@@ -80,13 +79,13 @@ class App extends Component{
               )} 
             />
 
-            <Route exact path="/recipes/search/:searchTerm" 
+            <Route path="/recipes/search/:searchTerm" 
               render={props => (
                 <Recipes recipes={this.recipesFilteredBySearch(props.match.params.searchTerm)}/>
               )}
             />
 
-            <Route exact path="/users/:id/recipes" 
+            <Route path="/users/:id/recipes" 
               render={props => (
                 <Recipes recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))} />
               )}

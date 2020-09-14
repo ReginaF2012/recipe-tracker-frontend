@@ -2,19 +2,19 @@ import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Card, Button } from 'react-bootstrap';
 
-export default function RecipeCards(props){
+export default function RecipeCards({recipe}){
        return (
-        <Card key={props.id} className="text-center recipe-card">
-            <Card.Img variant="top" alt={`${props.name} image`} src={props.image_url} />
+        <Card key={recipe.id} className="text-center recipe-card">
+            <Card.Img variant="top" alt={`${recipe.name} image`} src={recipe.image_url} />
             <Card.Body>
-                <Card.Title>{props.name}</Card.Title>
+                <Card.Title>{recipe.name}</Card.Title>
                 <div className="card-summary-container">
                     <Card.Text >
-                        {props.summary}
+                        {recipe.summary.length < 200 ? recipe.summary : recipe.summary.slice(0, 150)+"..."}
                     </Card.Text>  
                 </div>
                 
-            < LinkContainer to={`/recipes/${props.id}`}>
+            < LinkContainer to={`/recipes/${recipe.id}`}>
                 <Button  className="center-bottom-button" variant="primary">See Recipe</Button>
             </LinkContainer>
             </Card.Body>

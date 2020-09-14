@@ -7,7 +7,13 @@
   pointer-events: none;
 }
 
-
+.remove-button {
+  margin-left: 15px;
+  float: right;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 .recipe-card > img {
   width: 100%;
   height: 45%;
@@ -30,7 +36,7 @@
 }
 
 .card-summary-container {
-  max-height: 150px;
+  max-height: 140px;
   overflow: hidden;
 }
 

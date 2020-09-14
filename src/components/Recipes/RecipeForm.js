@@ -1,15 +1,15 @@
 import React from 'react';
 import { Component, Fragment } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Container, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { postRecipe, editRecipe } from '../../actions/recipesActions';
+import RemoveButton from '../removeButton';
 
 
 // used this stack overflow https://stackoverflow.com/questions/36512686/react-dynamically-add-input-fields-to-form to figure out dynamic input fields
 
 class RecipeForm extends Component{
 
-    isEdit = !!this.props.match.params.id
 
     state = {  
         user_id: this.props.user.id,
@@ -36,27 +36,15 @@ class RecipeForm extends Component{
     }
 
     renderRemoveIngredientButton = (index) => {
-        return this.state.ingredients_attributes.length > 1 && (
-            <Button onClick={this.removeIngredient} name={index} id={`remove-ingredient-${index+1}`} variant="danger" size="sm" style={{
-                marginLeft: "15px",
-                float: "right",
-                lineHeight: "20px",
-                cursor: "pointer",
-                transition:" 0.3s",
-              }}>&times; Remove</Button>
-        )
+       if (this.state.ingredients_attributes.length > 1 ){
+           return <RemoveButton callback={this.removeIngredient} index={index}/>
+       }
     }
 
     renderRemoveInstructionButton = (index) => {
-        return this.state.instructions.length > 1 && (
-            <Button onClick={this.removeInstruction} name={index} id={`remove-instruction-index-${index+1}`} variant="danger" size="sm" style={{
-                marginLeft: "15px",
-                float: "right",
-                lineHeight: "20px",
-                cursor: "pointer",
-                transition:" 0.3s",
-              }}>&times; Remove</Button>
-        )
+        if (this.state.instructions.length > 1){
+            return <RemoveButton callback={this.removeInstruction} index={index}/>
+        }
     }
 
 
