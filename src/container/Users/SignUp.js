@@ -23,7 +23,6 @@ class Login extends Component{
         event.preventDefault()
         let user = {...this.state.user}
         this.props.signUpUser(user)
-        this.setState({user: {username: '', email: '', password: '', password_confirmation: ''}})
     }
 
     render(){

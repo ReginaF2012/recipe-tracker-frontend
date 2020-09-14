@@ -9,24 +9,28 @@ import { logoutUser } from '../actions/usersActions'
 
 class NavigationBar extends Component{
 
+    // component needs to have state for inline search form
     state={
-        searchValue: '',
-        renderSearchResults: false
+        searchValue: ''
     }
 
     handleLogout = () => {
         this.props.logoutUser()
     }
 
+    // for inline search form
     handleOnChange = (event) => {
         this.setState({[event.target.name]: event.target.value})
     }
 
+    // when the user hits the 'search' button
     handleSearch = (event) => {
         event.preventDefault()
-        this.setState({renderSearchResults: true})
+        // grab the search term
         let searchTerm = this.state.searchValue
+        // clear search bar
         this.setState({searchValue: ''})
+        // redirect to the search results page
         this.props.history.push(`/recipes/search/${searchTerm.replace(/\s+/g, '-').toLowerCase()}`)
     }
 

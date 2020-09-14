@@ -2,10 +2,11 @@ import React from 'react';
 import RecipeCard from '../../components/Recipes/RecipeCard';
 import { CardGroup } from 'react-bootstrap';
 
-
+// container component for recipes
 export default function Recipes({recipes}){
 
     const makeRecipeCards = (recipes) => {
+        // if there are recipes, map over them and render recipe cards
         if(recipes.length> 0){
             return recipes.map((recipe, index) => {
                 return (
@@ -15,6 +16,7 @@ export default function Recipes({recipes}){
                 )
             })
         } else {
+            // otherwise inform the user there are no recipes
             return <p>No recipes yet...</p>
         }
     }

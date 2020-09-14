@@ -10,10 +10,13 @@ export default function RecipeCards({recipe}){
                 <Card.Title>{recipe.name}</Card.Title>
                 <div className="card-summary-container">
                     <Card.Text >
-                        {recipe.summary.length < 200 ? recipe.summary : recipe.summary.slice(0, 150)+"..."}
+                        {/* if the summary is longer than 150 characters I want to 
+                        only display the first 150 followed by elipses */}
+                        {recipe.summary.length < 150 ? recipe.summary : recipe.summary.slice(0, 150)+"..."}
                     </Card.Text>  
                 </div>
                 
+                {/* link to show page */}
             < LinkContainer to={`/recipes/${recipe.id}`}>
                 <Button  className="center-bottom-button" variant="primary">See Recipe</Button>
             </LinkContainer>

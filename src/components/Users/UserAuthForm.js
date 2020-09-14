@@ -2,6 +2,10 @@ import React from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 
 export default function UserAuthForm({user, handleOnChange, handleSubmit, isLogin}){
+
+    // this form is for login and sign up
+
+    // password confirmation is only required for sign up, so it's broken it out into a separate function to be called on sign up forms
     const renderPassConf = () => {
         return (
             <Form.Group>

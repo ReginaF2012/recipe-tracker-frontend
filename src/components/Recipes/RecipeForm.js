@@ -9,8 +9,13 @@ import RemoveButton from '../removeButton';
 // used this stack overflow https://stackoverflow.com/questions/36512686/react-dynamically-add-input-fields-to-form to figure out dynamic input fields
 
 class RecipeForm extends Component{
+    
+    // using this form for edit and add because they are only slightly different
+    // if the url has an id param in it, then it is the edit form
+    isEdit = !!this.props.match.params.id
 
 
+    // start the state blank except user_id for add
     state = {  
         user_id: this.props.user.id,
         image: '',
@@ -24,10 +29,12 @@ class RecipeForm extends Component{
      }
 
     componentDidMount(){
+        // if it's an edit, find the recipe it's for from the recipe array
         if(this.isEdit){
             let recipes = this.props.recipes
             let id = this.props.match.params.id
             const recipe = recipes.find(recipe => recipe.id === parseInt(id))
+            // set the state to the current values of that recipe, which will fill in the edit form with the current information for the recipe
             this.setState({...recipe, instructions: recipe.instructions.split('\n'),ingredients_attributes: recipe.ingredients.map(ingredient => {
                 return {name: ingredient.name, amount: ingredient.recipes_ingredients[0].amount}
                 })
@@ -35,6 +42,7 @@ class RecipeForm extends Component{
         }
     }
 
+    // Only want to be able to remove an ingredient or instruction input if there are more than one. Each recipe must at least have 1 ingredient and 1 step in the instructions
     renderRemoveIngredientButton = (index) => {
        if (this.state.ingredients_attributes.length > 1 ){
            return <RemoveButton callback={this.removeIngredient} index={index}/>
@@ -48,14 +56,12 @@ class RecipeForm extends Component{
     }
 
 
-
-    addIngredientInput = () => {
-        this.setState(prevState => ({...prevState, ingredients_attributes: [...prevState.ingredients_attributes, {name: '', amount: ''}]}))
-    }
-
     removeInstruction = (event) => {
+        // stored the index of the instruction in the name field
         let index = parseInt(event.target.name)
+        // get all of the instructions currently in state
         let instructions = [...this.state.instructions]
+        // get all of the instructions except for the one to be removed
         instructions = [...instructions.slice(0, index), ...instructions.slice(index+1)]
 
         this.setState({...this.state, instructions})
@@ -64,15 +70,22 @@ class RecipeForm extends Component{
 
     instructionOnChange = (event) => {
         event.persist()
+        // get the index of the instruction that is being changed
         let index = event.target.name
-        let instructions = this.state.instructions
+        // get all of the instructions in state
+        let instructions = [...this.state.instructions]
+        // change the value of the instruction at that index to event.target.value
         instructions[index] = event.target.value
+
         this.setState({instructions})
     }
 
+    // when the user clicks the "add another instruction" button, add a new instruction with a blank string to the array, causing another input field to be rendered
     addInstructionsInput = () => {
         this.setState(prevState => ({...prevState, instructions: [...prevState.instructions, '']}))
     }
+
+    // dynamic ingredient inputs are almost identical to instructions, main difference is it's an array of objects and not strings
 
     ingredientOnChange = (event) => {
         event.persist()
@@ -82,15 +95,6 @@ class RecipeForm extends Component{
         this.setState({...this.state, ingredients_attributes})
     }
 
-    imageOnChange = (event) => {
-        event.persist()
-        this.setState({image: event.target.files[0]})
-    }
-
-    recipeOnChange = (event) => {
-        this.setState({[event.target.name]: event.target.value})
-    }
-
     removeIngredient = (event) => {
         let index = parseInt(event.target.name)
         let ingredients_attributes = [...this.state.ingredients_attributes]
@@ -98,15 +102,30 @@ class RecipeForm extends Component{
         this.setState({...this.state, ingredients_attributes})
 
     }
+      addIngredientInput = () => {
+        this.setState(prevState => ({...prevState, ingredients_attributes: [...prevState.ingredients_attributes, {name: '', amount: ''}]}))
+    }
+
+    imageOnChange = (event) => {
+        event.persist()
+        // set the image to the value of the file, this is what will need to be sent to backend for use with cloudinary
+        this.setState({image: event.target.files[0]})
+    }
+
+    recipeOnChange = (event) => {
+        this.setState({[event.target.name]: event.target.value})
+    }
 
     handleSubmit = (event) => {
         event.preventDefault()
+        // instructions are stored in backend as string
         const recipe = {...this.state, instructions: this.state.instructions.join('\n')}
-       
         this.isEdit ? this.props.editRecipe(recipe, this.props) : this.props.addRecipe(recipe, this.props)
     }
 
     renderIngredientInputs = () => {
+
+        // map over the ingredients array and display an input field for each ingredient
         
         return (
             <>
@@ -129,6 +148,7 @@ class RecipeForm extends Component{
         )
     }
 
+    // almost identical to renderIngredientInputs
     renderInstructionInputs = () => {
         return(
         <Fragment>

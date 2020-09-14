@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../actions/usersActions';
 import UserAuthForm from '../../components/Users/UserAuthForm';
 
+// component to handle login
 class Login extends Component{
+
+
     state = {
         user: {
             username: '', 
@@ -23,7 +26,6 @@ class Login extends Component{
         event.preventDefault()
         let user = {...this.state.user}
         this.props.loginUser(user)
-        this.setState({user: {username: '', email: '', password: '', password_confirmation: ''}})
     }
 
     render(){

@@ -7,44 +7,44 @@ import { connect } from 'react-redux';
 export class Recipe extends Component{
 
  
-
+    // handle click for delete button
     handleDeleteClick = () => {
         this.props.deleteRecipe(this.props.recipe.id, this.props)
     }
 
+    // to be called in render
     renderIngredients = () => {
+        // map over the ingredient array
         return this.props.recipe.ingredients.map((ingredient, index) => {
+            // the amount is stored on a join table between recipe and ingredient
             const amount = ingredient.recipes_ingredients[0].amount 
+            // return li with amount followed by ingredient name
             return <li key={`ingredient-${index+1}`}>{amount} {ingredient.name}</li>
         })
     }
 
+    // to be called in render
     renderInstructions = () => {
+        // the instructions come in as a string with newline characters between
+        // steps, I want to display them as a list so splitting them on the newline character
         let instructionsArr = this.props.recipe.instructions.split('\n')
 
-        if(instructionsArr.length > 1){
-            return (
-                <div className="recipe-instructions">
-                    <h3>Instructions</h3>
-                    <ol className="instructions-list">
-                        {instructionsArr.map((step, index) => {
-                            return <li key={`step-${index+1}`}>{step}</li>
-                        })}
-                    </ol>
-                </div>
-            )
-        } else {
-            return (
-                <div className="recipe-instructions">
-                    <h3>Instructions</h3>
-                    <p>{instructionsArr[0]}</p>
-                </div>
-            )
-        }
+        // display the steps in an ordered list
+        return (
+            <div className="recipe-instructions">
+                <h3>Instructions</h3>
+                <ol className="instructions-list">
+                    {instructionsArr.map((step, index) => {
+                        return <li key={`step-${index+1}`}>{step}</li>
+                    })}
+                </ol>
+            </div>
+        )
     }
 
 
     render(){
+        // split the prep time and cook time into number and unit ex) "1 hour" => ["1", "hour"]
         const [recipePrepTimeNum, recipePrepTimeUnit] = this.props.recipe.prep_time.split(" ")
         const [recipeCookTimeNum, recipeCookTimeUnit] = this.props.recipe.cook_time.split(" ")
         return (
@@ -84,7 +84,8 @@ export class Recipe extends Component{
                 </div>
                 {this.renderInstructions()}
             </div>
-            
+
+            {/* if the recipe belongs to the user, let them click the edit and delete buttons */}
                 { this.props.user.id === this.props.recipe.user_id && (
                     <div className="btns-container">
                         <Button onClick={() => {this.props.history.push(`/recipes/${this.props.recipe.id}/edit`)}} variant="primary" size="lg" block>
@@ -102,12 +103,14 @@ export class Recipe extends Component{
     )}
 }
 
+// need to grab the user to see if the recipe belongs to that user
 const mapStateToProps = (state) => {
     return {
         user: state.user
     }
 }
 
+// for the delete button
 const mapDispatchToProps = (dispatch) => {
     return {
         deleteRecipe: (recipeId, ownProps) => ( dispatch(deleteRecipe(recipeId, ownProps)))

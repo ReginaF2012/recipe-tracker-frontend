@@ -1,4 +1,5 @@
 import { ADD_ALERTS } from './alertsActions';
+//! URL of API backend. Change when hosted live
 const URL = "http://localhost:3001/api/v1/users"
 const LOGIN = (user) => ({type: "LOGIN", payload: user})
 const LOGOUT = {type: "LOGOUT"}
@@ -12,6 +13,7 @@ export const loginUser = (user) => {
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             },
+            // Nesting the object here because of strong params on backend
             body: JSON.stringify({user: {...user}})
         })
         .then(resp => resp.json())
@@ -26,7 +28,7 @@ export const logoutUser = (dispatch) => {
 }
 
 export const autoLoginUser = (dispatch) => {
-    // need to use token in local storage to make a fetch request to the rails API
+    // use token in local storage to make a fetch request to the rails API
     return (dispatch) => {    
         fetch(URL+'/autologin', {
             headers: {
@@ -35,7 +37,7 @@ export const autoLoginUser = (dispatch) => {
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             }
         })
-        // then need to update state with user object returned from backend
+        // then update state with user object returned from backend
         .then(resp => resp.json())
         .then(json => {
             !!json.errors ? dispatch(ADD_ALERTS(json.errors)) : dispatch(LOGIN(json))
