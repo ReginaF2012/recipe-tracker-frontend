@@ -101,7 +101,7 @@ class App extends Component{
             <Route exact path="/recipes/search/:searchTerm" 
               render={props => (
                 // use recipe container but only send recipes that match the search term
-                <Recipes recipes={this.recipesFilteredBySearch(props.match.params.searchTerm)}/>
+                <Recipes {...props} recipes={this.recipesFilteredBySearch(props.match.params.searchTerm)}/>
               )}
             />
 

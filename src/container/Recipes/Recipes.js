@@ -3,7 +3,7 @@ import RecipeCard from '../../components/Recipes/RecipeCard';
 import { CardGroup } from 'react-bootstrap';
 
 // container component for recipes
-export default function Recipes({recipes}){
+export default function Recipes(props){
 
     const makeRecipeCards = (recipes) => {
         // if there are recipes, map over them and render recipe cards
@@ -24,7 +24,8 @@ export default function Recipes({recipes}){
 
     return (
         <CardGroup>
-            {makeRecipeCards(recipes)}
+            {console.log(props)}
+            {makeRecipeCards(props.recipes)}
         </CardGroup>   
     )
 
