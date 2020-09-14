@@ -98,14 +98,14 @@ class App extends Component{
               )} 
             />
 
-            <Route path="/recipes/search/:searchTerm" 
+            <Route exact path="/recipes/search/:searchTerm" 
               render={props => (
                 // use recipe container but only send recipes that match the search term
                 <Recipes recipes={this.recipesFilteredBySearch(props.match.params.searchTerm)}/>
               )}
             />
 
-            <Route path="/users/:id/recipes" 
+            <Route exact path="/users/:id/recipes" 
               render={props => (
                 // user index of recipes
                 <Recipes recipes={this.props.recipes.filter(recipe => recipe.user_id === parseInt(props.match.params.id))} />
