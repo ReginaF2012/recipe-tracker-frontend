@@ -1,6 +1,6 @@
 import { ADD_ALERTS } from './alertsActions';
 //! URL of API backend. Change when hosted live
-const URL = "http://localhost:3001/api/v1/users"
+const URL = "https://tranquil-badlands-73443.herokuapp.com/api/v1/users"
 const LOGIN = (user) => ({type: "LOGIN", payload: user})
 const LOGOUT = {type: "LOGOUT"}
 const SIGN_UP = (user) => ({type: "SIGN UP", payload: user})

@@ -1,7 +1,7 @@
 import { ADD_ALERTS } from "./alertsActions";
 import { serialize } from 'object-to-formdata';
 //! URL of API backend. Change when hosted live
-const URL = "http://localhost:3001/api/v1/recipes"
+const URL = "https://tranquil-badlands-73443.herokuapp.com/api/v1/recipes"
 const ADD_RECIPES = (payload) => ({type: "ADD_RECIPES", payload})
 const ADD_RECIPE = (payload) => ({type: "ADD_RECIPE", payload})
 const REMOVE_RECIPE = (payload) => ({type: "REMOVE_RECIPE", payload})

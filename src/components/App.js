@@ -33,6 +33,7 @@ class App extends Component{
     }
   }
 
+
   recipesFilteredBySearch(searchTerm){
     // the searchTerm comes from the url, replace dashes with spaces
     let filter = searchTerm.replace(/-/g, ' ')

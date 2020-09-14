@@ -28,6 +28,7 @@ class RecipeForm extends Component{
         ingredients_attributes: [{name: '', amount: ''}]      
      }
 
+     //? if I'm going to do this this way, should this happen in componentWillRecieveProps
     componentDidMount(){
         // if it's an edit, find the recipe it's for from the recipe array
         if(this.isEdit){
