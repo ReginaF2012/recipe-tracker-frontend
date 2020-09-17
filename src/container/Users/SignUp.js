@@ -9,7 +9,8 @@ class Login extends Component{
         user: {
             username: '', 
             email: '', 
-            password: ''
+            password: '',
+            password_confirmation: ''
         },
         
         isLogin: false
